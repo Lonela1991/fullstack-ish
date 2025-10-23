@@ -7,6 +7,7 @@ dotenv.config();
 
 const pgClient = new Client({
   connectionString: process.env.PGURI,
+  ssl: { rejectUnauthorized: false }
 });
 
 pgClient.connect()
@@ -16,7 +17,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // "/api" istället för enbart "/" för att undvika krock med frontend-rutter
-app.get('/api', async (_request, response) => {
+app.get('/api/gettodos', async (_request, response) => {
   const {rows} = await pgClient.query('SELECT * FROM todos;');
   response.send(rows);
 })
