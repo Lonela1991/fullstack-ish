@@ -1,16 +1,35 @@
-# React + Vite
+# Webbadress
+https://fullstack-ish-i0hk.onrender.com/
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Content Delivery Networks (CDN)
 
-Currently, two official plugins are available:
+## Vad är ett CDN för något?
+Ett CDN (Content Delivery Network) är ett nätverk av servrar som finns på olika platser i världen. Servrarna lagrar kopior av en webbplats, så när någon besöker sidan skickas innehållet från den server som ligger närmast användaren. Det gör att sidan laddar snabbare och fungerar bättre.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+## Fördelar med CDN
+CDN gör att sidor laddar snabbare eftersom innehållet levereras från den server som ligger närmast användaren, vilket minskar väntetiden.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Det gör även webbplatsen mer tillförlitlig, eftersom om en server går ner kan en annan server ta över, och sidan förblir alltid tillgänglig.
 
-## Expanding the ESLint configuration
+CDN ökar säkerheten genom att skydda mot attacker och förenkla hantering av säkerhetscertifikat.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Dessutom minskar CDN belastningen på ursprungsservern, eftersom mindre trafik skickas dit, vilket sparar bandbredd och kan sänka kostnader.
+
+## Exempel på CDN-tjänster
+Akamai, Microsoft Azure CDN, Google Cloud CDN, Amazon CloudFront, CloudFlare, Fastly, KeyCDN, 
+
+# Monitorering
+
+## Vad är monitorering för något?
+Monitorering handlar om att hålla koll på våra webbplatser eller tjänster för att se till att de fungerar som de ska. Tjänster som Scout APM och Pingdom kan till exempel kontrollera att våra sidor går att nå och att de laddar snabbt.
+
+## Fördelar med monitorering
+Med monitorering kan vi upptäcka problem tidigt, innan användarna hinner märka dem.
+
+Om en tjänst blir långsam eller otillgänglig skickas notifikationer direkt via e-post, SMS eller andra kanaler, vilket gör att vi kan agera snabbt.
+
+Monitorering fungerar även utan en fullständig backend, och det går att bevaka även en webbplats eller applikation som bara består av klientdelen, alltså det som körs i webbläsaren.
+
+## Exempel på monitoreringstjänster
+Scout APM, Pingdom, New Relic, Datadog, Sentry, Appsignal, Raygun, LogRocket
