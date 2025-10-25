@@ -6,7 +6,6 @@ https://fullstack-ish-i0hk.onrender.com/
 ## Vad är ett CDN för något?
 Ett CDN (Content Delivery Network) är ett nätverk av servrar som finns på olika platser i världen. Servrarna lagrar kopior av en webbplats, så när någon besöker sidan skickas innehållet från den server som ligger närmast användaren. Det gör att sidan laddar snabbare och fungerar bättre.
 
-
 ## Fördelar med CDN
 CDN gör att sidor laddar snabbare eftersom innehållet levereras från den server som ligger närmast användaren, vilket minskar väntetiden.
 
@@ -17,7 +16,8 @@ CDN ökar säkerheten genom att skydda mot attacker och förenkla hantering av s
 Dessutom minskar CDN belastningen på ursprungsservern, eftersom mindre trafik skickas dit, vilket sparar bandbredd och kan sänka kostnader.
 
 ## Exempel på CDN-tjänster
-Akamai, Microsoft Azure CDN, Google Cloud CDN, Amazon CloudFront, CloudFlare, Fastly, KeyCDN, 
+
+Akamai, Microsoft Azure CDN, Google Cloud CDN, Amazon CloudFront, CloudFlare, Fastly, KeyCDN,
 
 # Monitorering
 

@@ -1,0 +1,7 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.enableDebugLogs": true
+}
