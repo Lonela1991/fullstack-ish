@@ -1,26 +1,15 @@
 import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
-import { Client } from 'pg';
+import todosRoutes from './routes/todosRoutes.js';
 
-dotenv.config();
-
-const pgClient = new Client({
-  connectionString: process.env.PGURI,
-  ssl: { rejectUnauthorized: false },
-});
-
-pgClient.connect();
+dotenv.config({quiet: true});
 
 const app = express();
-
 const port = process.env.PORT || 3000;
+app.use(express.json());
 
-// "/api" istället för enbart "/" för att undvika krock med frontend-rutter
-app.get('/api/gettodos', async (_request, response) => {
-  const { rows } = await pgClient.query('SELECT * FROM todos;');
-  response.send(rows);
-});
+app.use('/api', todosRoutes);
 
 console.log('Katalogen vi är i:', path.resolve());
 console.log('join:', path.join(path.resolve(), 'dist'));
