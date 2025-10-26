@@ -30,7 +30,7 @@ function App() {
     setToDos((prev) =>
       prev.map((todo) =>
         todo.id === id
-          ? { ...todo, isEditing: true }
+          ? { ...todo, isEditing: true, oldTask: todo.task }
           : { ...todo, isEditing: false }
       )
     );
@@ -42,22 +42,34 @@ function App() {
     );
   };
 
-  const saveTask = async (id) => {
+  const saveOrToggleTodo = async (id, completedToggle = false) => {
     const todo = todos.find((t) => t.id === id);
     if (!todo) return;
-    await updateTodo(id, { task: todo.task, completed: todo.completed });
-    setToDos((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, isEditing: false } : t))
-    );
-  };
 
-  const toggleCompleted = async (id) => {
-    const todo = todos.find((t) => t.id === id);
-    if (!todo) return;
-    const updated = { ...todo, completed: !todo.completed };
-    await updateTodo(id, updated);
+    let newTask = todo.task.trim();
+
+    // Om task är tom och man inte togglar completed, återgå till oldTask
+    if (!newTask && !completedToggle) {
+      newTask = todo.oldTask || '';
+    }
+
+    const updatedTodo = completedToggle
+      ? { ...todo, completed: !todo.completed, task: newTask }
+      : { ...todo, task: newTask };
+
+    await updateTodo(todo.id, updatedTodo);
+
     setToDos((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+      prev.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              isEditing: false,
+              completed: updatedTodo.completed,
+              task: newTask,
+            }
+          : t
+      )
     );
   };
 
@@ -91,7 +103,7 @@ function App() {
               type="text"
               value={todo.task}
               onChange={(e) => handleTaskChange(todo.id, e.target.value)}
-              onBlur={() => saveTask(todo.id)}
+              onBlur={() => saveOrToggleTodo(todo.id)}
               style={{ flex: 1, padding: '6px' }}
             />
           ) : (
@@ -112,7 +124,7 @@ function App() {
           <input
             type="checkbox"
             checked={todo.completed}
-            onChange={() => toggleCompleted(todo.id)}
+            onChange={() => saveOrToggleTodo(todo.id, true)}
           />
         </div>
       ))}
