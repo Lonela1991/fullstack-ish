@@ -13,3 +13,24 @@ export const getTodos = async () => {
         return [];
     }
 };
+
+// Lägg till en ny todo
+export const addTodo = async (task) => {
+    if(!task || task.trim() === '') return null;
+    try {
+        const response = await fetch(`${API_BASE}/addtodo`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ task, completed: false }),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to add todo');
+        } 
+        return await response.json(); // returnerar raden som skapats i databasen
+    } catch (error) {
+        console.error('Error adding todo:', error);
+        return null;
+    }
+};

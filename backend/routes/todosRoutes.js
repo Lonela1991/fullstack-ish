@@ -18,7 +18,7 @@ try {
 router.post('/addtodo', async (req, res) => {
   const { task, completed } = req.body;
   try {
-    const result = await pool.query(
+    const result = await db.query(
       'INSERT INTO todos (task, completed) VALUES ($1, $2) RETURNING *',
       [task, completed]
     );
