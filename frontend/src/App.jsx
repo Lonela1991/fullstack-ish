@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import './App.css';
+import { getTodos } from './services/todoService';
 
 function App() {
   const [todos, setToDos] = useState([]);
 
   useEffect(() => {
-    fetch('/api/gettodos')
-      .then((response) => response.json())
-      .then((result) => setToDos(result));
+    const fetchTodos = async () => {
+      const result = await getTodos();
+      setToDos(result);
+    };
+    fetchTodos();
   }, []);
 
   return (
