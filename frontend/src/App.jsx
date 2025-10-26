@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { getTodos, addTodo, updateTodoCompleted } from './services/todoService';
+import { getTodos, addTodo, updateTodo } from './services/todoService';
 
 function App() {
   const [todos, setToDos] = useState([]);
@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     const fetchTodos = async () => {
       const result = await getTodos();
-      setToDos(result);
+      setToDos(result.map((todo) => ({ ...todo, isEditing: false })));
     };
     fetchTodos();
   }, []);
@@ -18,52 +18,105 @@ function App() {
     if (!newTask.trim()) return;
     const createdTodo = await addTodo(newTask);
     if (createdTodo) {
-      setToDos((prevTodos) => [...prevTodos, createdTodo]);
+      setToDos((prevTodos) => [
+        ...prevTodos,
+        { ...createdTodo, isEditing: false },
+      ]);
       setNewTask('');
     }
   };
 
-  const handleCheckboxChange = async (id, completed) => {
-    const updatedTodo = await updateTodoCompleted(id, completed);
-    if (updatedTodo) {
-      setToDos((prev) =>
-        prev.map((todo) => (todo.id === id ? updatedTodo : todo))
-      );
-    }
+  const toggleEdit = (id) => {
+    setToDos((prev) =>
+      prev.map((todo) =>
+        todo.id === id
+          ? { ...todo, isEditing: true }
+          : { ...todo, isEditing: false }
+      )
+    );
+  };
+
+  const handleTaskChange = (id, newValue) => {
+    setToDos((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, task: newValue } : todo))
+    );
+  };
+
+  const saveTask = async (id) => {
+    const todo = todos.find((t) => t.id === id);
+    if (!todo) return;
+    await updateTodo(id, { task: todo.task, completed: todo.completed });
+    setToDos((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, isEditing: false } : t))
+    );
+  };
+
+  const toggleCompleted = async (id) => {
+    const todo = todos.find((t) => t.id === id);
+    if (!todo) return;
+    const updated = { ...todo, completed: !todo.completed };
+    await updateTodo(id, updated);
+    setToDos((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+    );
   };
 
   return (
-    <>
-      <h1>ToDo Lista</h1>
+    <div style={{ maxWidth: '600px', margin: '40px auto', padding: '0 16px' }}>
+      <h1 style={{ textAlign: 'center' }}>TODO:</h1>
+
       <div style={{ display: 'flex', marginBottom: '16px' }}>
         <input
           type="text"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
-          placeholder="Skriv en ny todo"
+          placeholder="Skapa ny uppgift..."
           style={{ flex: 1, marginRight: '8px' }}
         />
         <button onClick={handleAddTodo}>Lägg till</button>
       </div>
+
       {todos.map((todo) => (
         <div
           key={todo.id}
-          style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '8px',
+            gap: '8px',
+          }}
         >
-          <input
-            type="text"
-            value={todo.task}
-            disabled
-            style={{ flex: 1, marginRight: '8px', textAlign: 'left' }}
-          />
+          {todo.isEditing ? (
+            <input
+              type="text"
+              value={todo.task}
+              onChange={(e) => handleTaskChange(todo.id, e.target.value)}
+              onBlur={() => saveTask(todo.id)}
+              style={{ flex: 1, padding: '6px' }}
+            />
+          ) : (
+            <p
+              onClick={() => toggleEdit(todo.id)}
+              style={{
+                flex: 1,
+                margin: 0,
+                textAlign: 'left',
+                cursor: 'pointer',
+                textDecoration: todo.completed ? 'line-through' : 'none',
+              }}
+            >
+              {todo.task}
+            </p>
+          )}
+
           <input
             type="checkbox"
             checked={todo.completed}
-            onChange={(e) => handleCheckboxChange(todo.id, e.target.checked)}
+            onChange={() => toggleCompleted(todo.id)}
           />
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

@@ -35,15 +35,19 @@ export const addTodo = async (task) => {
   }
 };
 
-// Uppdatera en todo till klar/ej klar
-export const updateTodoCompleted = async (id, completed) => {
+// Uppdatera en todo till (task och/eller completed)
+export const updateTodo = async (id, { task, completed }) => {
   try {
+    const bodyData = {};
+    if (task !== undefined) bodyData.task = task;
+    if (completed !== undefined) bodyData.completed = completed;
+
     const response = await fetch(`${API_BASE}/updatetodo/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ completed }),
+      body: JSON.stringify(bodyData),
     });
     if (!response.ok) throw new Error('Failed to update todo');
     return await response.json();
