@@ -29,4 +29,20 @@ router.post('/addtodo', async (req, res) => {
   }
 });
 
+// Uppdatera en todo till klar/ej klar
+router.put('/updatetodo/:id', async (req, res) => {
+  const { id } = req.params;
+  const { completed } = req.body;
+  try {
+    const result = await db.query(
+      'UPDATE todos SET completed = $1 WHERE id = $2 RETURNING *',
+      [completed, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to update todo');
+  }
+});
+
 export default router;

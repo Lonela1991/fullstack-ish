@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { getTodos, addTodo } from './services/todoService';
+import { getTodos, addTodo, updateTodoCompleted } from './services/todoService';
 
 function App() {
   const [todos, setToDos] = useState([]);
@@ -16,13 +16,21 @@ function App() {
 
   const handleAddTodo = async () => {
     if (!newTask.trim()) return;
-
     const createdTodo = await addTodo(newTask);
     if (createdTodo) {
       setToDos((prevTodos) => [...prevTodos, createdTodo]);
       setNewTask('');
     }
-  }
+  };
+
+  const handleCheckboxChange = async (id, completed) => {
+    const updatedTodo = await updateTodoCompleted(id, completed);
+    if (updatedTodo) {
+      setToDos((prev) =>
+        prev.map((todo) => (todo.id === id ? updatedTodo : todo))
+      );
+    }
+  };
 
   return (
     <>
@@ -48,7 +56,11 @@ function App() {
             disabled
             style={{ flex: 1, marginRight: '8px', textAlign: 'left' }}
           />
-          <input type="checkbox" checked={todo.completed} />
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={(e) => handleCheckboxChange(todo.id, e.target.checked)}
+          />
         </div>
       ))}
     </>

@@ -3,7 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import todosRoutes from './routes/todosRoutes.js';
 
-dotenv.config({quiet: true});
+dotenv.config({ quiet: true });
 
 const app = express();
 const port = process.env.PORT || 3000;
